@@ -28,7 +28,7 @@ author:
   pronouns         : # example: "she/her"  
   bio              : "Social demographer"
   location         : "Rostock, Germany"
-  employer         : "Max Planck Institute for Demographic Research"
+  employer         : #
   uri              : # URL
   email            : "dierker@demogr.mpg.de" 
 
