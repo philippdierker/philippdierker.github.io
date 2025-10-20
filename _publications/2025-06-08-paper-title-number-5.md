@@ -1,13 +1,9 @@
 ---
-title: "Paper Title Number 5, with math $$E=mc^2$$"
+title: "Compensation or accentuation? How parents from different social backgrounds decide to support their children"
 collection: publications
-category: conferences
-permalink: /publication/2024-02-17-paper-title-number-4
-excerpt: 'This paper is about a famous math equation, $$E=mc^2$$'
-date: 2024-02-17
-venue: 'GitHub Journal of Bugs'
-paperurl: 'https://academicpages.github.io/files/paper3.pdf'
-citation: 'Your Name, You. (2024). &quot;Paper Title Number 3.&quot; <i>GitHub Journal of Bugs</i>. 1(3).'
+category: manuscripts
+permalink: 'https://doi.org/10.1093/esr/jcae010'
+date: 2025
+venue: 'European Sociological Review'
+paperurl: 'https://watermark02.silverchair.com/jcae010.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAA2QwggNgBgkqhkiG9w0BBwagggNRMIIDTQIBADCCA0YGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMSrZpLBKQEujieUc8AgEQgIIDF_E4RBhpHTjFlUvghBhMwbL8jnFy2O9UdGzv4eCNdXBkq6cy3YVTq8GxhNQ8jtotHxKM0m8sbnyvbnwUDxVJv9ZoiVObR4GGJRc2EFx5d3N51BTXlkvsUOUnsIrzxKcCrDbC6YIe6i7eMglQbzCkL2BdaArslN4yjn7Azyjo6pIJykmHcx5l35BD8IEUtmSaaCBD2sT4wfucuZ9IQehZEPIXaQuyUIMAQFsEUiRH1OqJxEImo6mgoFIGsrAOLtUt8LsaxLILpNU729X60kPBgfElogeKBvjCR73cmEpEBQdnwPACgAzwn-zeAXP8y_cChfZABH9XBqoJJAaoeE9_VCvai-YkFInbcp9HXZSMIFooaw10beF9Q1O70Xf2kuUE-onxxW0NmkbB5FcL6pMmtMI-IDM616UNutzeHrsIcNwZLoznjZB89IHt63tf5n4VmCvIabGa1JABFvg2WazdkxQ3RjmwwWI4_ARJs10igH1mhS_JIqX16eE4Obo4-AQ7Yg20T5zFJuPFubjjJrDVZUWYs45PuGLt7P0Vp0BG-d6NYsl9AFzBumIgv1izCAhBKy0TKUXxvpUsgS5xk6nGtAMZBEm6rI1LAemqstjAS-VqUOQSViX7HkosWa6H-MXzRGHqSq5luVZ63YcDiMp9mQuAEJPtB1YcNEFF6jwBtd_gPg5DWtZ-Yf5ygbuGkk_aHvh-9CL7GfXmcoQ7PJZjY_89vK9zD0vsJ2mykMXdfSq-LTtC1S2g0RqXc4tw_ZrIs8RGb8LvjrJMbOdFY0kles8-gKihI6mj5quGJAFWnWpvG8BL0vBJChxqKWX0goaMo4R8i-9DIG33sVwOxkk0JkCWfF0tk_rHZoUgS-zSMbv31LjhRe3pTflVJwDtZ2RBBYemndadfHx9d6bZ8ehRptAklCHvxTqL1LMKWiRYFSS1nsrEedcugYkS0JlVJSnCI_CqZJzJ44gbASIigRSvPgMD3DrMHnqaqxj0afn3E3j6syCdU7g8V8QCdPalQd_YlWpAD94RhqvVwtqfathvtaWxfoeLnXl-'
 ---
-
-Using [MathJax](https://www.mathjax.org/) in the description is supported - $$E=mc^2$$ - however, the use must be mindful that the default delimiters are `$$...$$` and `\\[...\\]` which differs from the `$...$` that is typically expected.
