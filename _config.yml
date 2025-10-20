@@ -24,9 +24,9 @@ repository               : "academicpages/academicpages.github.io"
 author:
   # Biographic information
   avatar           : "profile.png"
-  name             : "Your Sidebar Name"
+  name             : "Philipp Dierker"
   pronouns         : # example: "she/her"  
-  bio              : "Short biography for the left-hand sidebar"
+  bio              : "Social demographer"
   location         : "Rostock, Germany"
   employer         : "Max Planck Institute for Demographic Research"
   uri              : # URL
