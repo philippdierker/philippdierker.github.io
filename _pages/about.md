@@ -17,3 +17,14 @@ I recently received my PhD in Demography from the University of Helsinki. Curren
 - Mental health and well-being across transitions
 - Gene–environment interplay (sociogenomics)
 - Longitudinal methods (fixed effects; dynamic DiD)
+
+
+## News
+
+<div style="max-height: 250px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background-color: #f9f9f9;">
+<ul>
+  <li><strong>October 2025:</strong>I presented our paper “Enduring links: Mental health effects of ex-partner’s life events among separated parents.” at the <em>Divorce Conference</em> in Barcelona.</li>
+  <li><strong>September 2025:</strong> Our paper “The Role of Family Complexity in Mental and Physical Health in Mid-Adulthood” accepted in <em>Journal of Marriage and Family</em>.</li>
+  <li><strong>August 2025:</strong> I defended my dissertation at the University of Helsinki.</li>
+</ul>
+</div>
