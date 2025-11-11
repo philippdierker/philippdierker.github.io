@@ -23,6 +23,7 @@ I recently received my PhD in Demography from the University of Helsinki. Curren
 
 <div style="max-height: 250px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background-color: #f9f9f9;">
 <ul>
+  <li><strong>November 2025:</strong> I presented our paper “Mental health effects of separation and re-partnering among parents of underage children” at the <em>Annual Meeting of the Max Planck--University of Helsinki Center for Social Inequalities in Population Health</em> in Helsinki.</li>
   <li><strong>October 2025:</strong> I presented our paper “Enduring links: Mental health effects of ex-partner’s life events among separated parents.” at the <em>Divorce Conference</em> in Barcelona.</li>
   <li><strong>September 2025:</strong> Our paper “The Role of Family Complexity in Mental and Physical Health in Mid-Adulthood” got accepted in the <em>Journal of Marriage and Family</em>.</li>
   <li><strong>August 2025:</strong> I defended my dissertation at the University of Helsinki.</li>
