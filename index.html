@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Philipp Dierker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --col-w: 240px;
+      --top-h: 56px;
+      --accent: #1d4ed8;
+      --accent-light: #eff6ff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --sidebar-bg: #f8fafc;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      overflow: hidden;
+    }
+
+    /* ══════════════════════════════
+       TOP NAV BAR
+    ══════════════════════════════ */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--top-h);
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 2rem;
+      z-index: 200;
+      gap: 0.25rem;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-btn:hover  { color: var(--accent); background: var(--accent-light); }
+    .nav-btn.active { color: var(--accent); background: var(--accent-light); }
+
+    /* ══════════════════════════════
+       LAYOUT
+    ══════════════════════════════ */
+    .layout {
+      display: flex;
+      height: 100vh;
+      padding-top: var(--top-h);
+    }
+
+    /* ── Left Column ── */
+    .left-col {
+      position: fixed;
+      top: var(--top-h);
+      left: 0;
+      width: var(--col-w);
+      height: calc(100vh - var(--top-h));
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.75rem 1.5rem 1.5rem;
+      overflow: hidden;
+    }
+
+    .avatar {
+      width: 115px;
+      height: 115px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c7d2fe 0%, #a5b4fc 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #3730a3;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.9rem;
+      flex-shrink: 0;
+      border: 3px solid #e0e7ff;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .col-name     { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.01em; text-align: center; margin-bottom: 0.15rem; }
+    .col-title    { font-size: 0.73rem; color: var(--muted); text-align: center; line-height: 1.4; margin-bottom: 0.1rem; }
+    .col-location { font-size: 0.7rem; color: #9ca3af; text-align: center; margin-bottom: 1.1rem; }
+
+    .col-divider  { width: 100%; border: none; border-top: 1px solid var(--border); margin-bottom: 1rem; }
+
+    .social-links { display: flex; flex-direction: column; gap: 0.1rem; width: 100%; }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.76rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .social-link:hover { color: var(--accent); background: var(--accent-light); }
+    .social-link svg   { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* ── Content Area ── */
+    .content-area {
+      margin-left: var(--col-w);
+      flex: 1;
+      height: calc(100vh - var(--top-h));
+      overflow-y: auto;
+      padding: 3.5rem 5rem 5rem 4.5rem;
+    }
+
+    .page          { display: none; max-width: 720px; }
+    .page.active   { display: block; }
+
+    /* ══════════════════════════════
+       SHARED TYPOGRAPHY
+    ══════════════════════════════ */
+    .label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 1.5rem; }
+    h2 { font-size: 1.35rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 1.75rem; }
+
+    p.intro { font-size: 1rem; color: #374151; line-height: 1.85; margin-bottom: 1.25rem; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
+
+    .tag {
+      font-size: 0.71rem;
+      font-weight: 500;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 0.2rem 0.65rem;
+      border-radius: 100px;
+    }
+
+    /* ══════════════════════════════
+       RESEARCH
+    ══════════════════════════════ */
+    .pub-group   { margin-bottom: 3rem; }
+
+    .group-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.55rem;
+      margin-bottom: 0;
+    }
+
+    .pub { padding: 1.1rem 0; border-bottom: 1px solid var(--border); }
+    .pub:last-child { border-bottom: none; }
+
+    .pub-title   { font-size: 0.9rem; font-weight: 500; color: var(--text); margin-bottom: 0.2rem; }
+    .pub-authors { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.15rem; }
+    .pub-journal { font-size: 0.8rem; color: var(--muted); font-style: italic; margin-bottom: 0.4rem; }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.63rem;
+      font-weight: 700;
+      font-style: normal;
+      padding: 0.12rem 0.42rem;
+      border-radius: 4px;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-fc { background: #fef9c3; color: #854d0e; }
+    .badge-rr { background: #dcfce7; color: #166534; }
+    .badge-ur { background: #f3e8ff; color: #6b21a8; }
+
+    /* Paper actions row */
+    .pub-actions { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+
+    .pub-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .pub-link:hover { opacity: 0.7; }
+    .pub-link svg   { width: 12px; height: 12px; }
+
+    /* Abstract toggle */
+    details.abstract { display: inline; }
+
+    details.abstract summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+      transition: color 0.15s;
+    }
+
+    details.abstract summary::-webkit-details-marker { display: none; }
+    details.abstract summary:hover { color: var(--accent); }
+
+    details.abstract[open] summary { color: var(--accent); }
+
+    .abstract-body {
+      margin-top: 0.65rem;
+      font-size: 0.82rem;
+      color: #374151;
+      line-height: 1.75;
+      background: var(--sidebar-bg);
+      border-left: 2px solid var(--accent-light);
+      padding: 0.65rem 0.9rem;
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* ══════════════════════════════
+       PRESENTATIONS
+    ══════════════════════════════ */
+    .pres-block { margin-top: 1.25rem; margin-bottom: 1.5rem; }
+
+    .year-label { font-size: 0.78rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+
+    .pres-item { font-size: 0.875rem; color: #374151; padding: 0.32rem 0; border-bottom: 1px solid var(--border); }
+    .pres-item:last-child { border-bottom: none; }
+
+    .pres-kind {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-left: 0.4rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ══════════════════════════════
+       CV
+    ══════════════════════════════ */
+    .cv-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 2.75rem;
+      transition: background 0.15s;
+    }
+
+    .cv-btn:hover { background: #1e40af; }
+
+    .cv-group { margin-bottom: 2.25rem; }
+
+    .cv-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cv-row:last-child { border-bottom: none; }
+
+    .cv-year  { font-size: 0.78rem; color: var(--muted); font-weight: 500; padding-top: 0.1rem; }
+    .cv-title { font-size: 0.88rem; font-weight: 500; color: var(--text); }
+    .cv-sub   { font-size: 0.8rem; color: var(--muted); }
+
+    /* ══════════════════════════════
+       MOBILE
+    ══════════════════════════════ */
+    @media (max-width: 768px) {
+      body { overflow: auto; }
+
+      .topbar {
+        justify-content: center;
+        padding: 0 1rem;
+        gap: 0.1rem;
+        flex-wrap: wrap;
+        height: auto;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      .nav-btn { font-size: 0.7rem; padding: 0.35rem 0.6rem; }
+
+      .layout {
+        flex-direction: column;
+        height: auto;
+        padding-top: 0;
+        /* push below topbar — JS sets this */
+      }
+
+      .left-col {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        overflow: visible;
+        gap: 0.75rem;
+      }
+
+      .avatar { width: 70px; height: 70px; font-size: 1.4rem; margin-bottom: 0; flex-shrink: 0; }
+
+      .col-info { text-align: center; }
+
+      .col-name     { font-size: 0.9rem; }
+      .col-title    { font-size: 0.7rem; }
+      .col-location { margin-bottom: 0; }
+      .col-divider  { display: none; }
+
+      .social-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.25rem;
+        width: 100%;
+      }
+
+      .social-link { padding: 0.2rem 0.4rem; }
+
+      .content-area {
+        margin-left: 0;
+        height: auto;
+        overflow: visible;
+        padding: 2rem 1.5rem 3rem;
+      }
+
+      h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ TOP NAV BAR ═══════════════ -->
+<header class="topbar">
+  <button class="nav-btn active" data-page="about">About</button>
+  <button class="nav-btn" data-page="research">Research</button>
+  <button class="nav-btn" data-page="presentations">Presentations</button>
+  <button class="nav-btn" data-page="cv">CV</button>
+</header>
+
+<!-- ═══════════════ LAYOUT ═══════════════ -->
+<div class="layout">
+
+  <!-- ── Left Column ── -->
+  <aside class="left-col">
+    <div class="avatar"><img src="assets/img/picture_homepage.jpeg" alt="Philipp Dierker"></div>
+
+    <div class="col-info">
+      <div class="col-name">Philipp Dierker</div>
+      <div class="col-title">Postdoctoral Researcher</div>
+      <div class="col-title">Social Demographer</div>
+      <div class="col-location">Rostock, Germany</div>
+    </div>
+
+    <hr class="col-divider" />
+
+    <div class="social-links">
+
+      <a href="mailto:dierker@demogr.mpg.de" class="social-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <polyline points="2,4 12,13 22,4"/>
+        </svg>
+        Email
+      </a>
+
+      <a href="https://github.com/philippdierker" class="social-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        GitHub
+      </a>
+
+      <a href="https://www.linkedin.com/in/philippdierker/" class="social-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        LinkedIn
+      </a>
+
+      <a href="https://bsky.app/profile/philippdierker.bsky.social" class="social-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C3.202 1.415 1.34.42.893.643c-.51.25-.308 1.65.053 2.834.335 1.096 1.567 4.677 1.567 4.677s-2.527-.44-2.527 1.088c0 .834.717 1.408 1.78 1.408 3.64 0 6.625 1.586 6.625 1.586-2.073.88-6.447.854-6.447 3.485 0 2.065 2.87 2.784 5.088 2.784 3.547 0 5.9-1.893 6.968-4.102C14.1 16.511 16.453 18.4 20 18.4c2.218 0 5.088-.72 5.088-2.784 0-2.631-4.374-2.606-6.447-3.485 0 0 2.985-1.586 6.625-1.586 1.063 0 1.78-.574 1.78-1.408 0-1.527-2.527-1.088-2.527-1.088s1.232-3.581 1.567-4.677c.361-1.184.563-2.584.053-2.834-.447-.223-2.309.772-4.309 2.162C16.046 4.747 13.087 8.686 12 10.8z"/>
+        </svg>
+        Bluesky
+      </a>
+
+      <a href="https://orcid.org/0000-0002-5038-7157" class="social-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947-.947-.431-.947-.947.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-1.016 5.016-4.134 5.016h-5.11V7.416zm1.444 1.303v7.444h2.297c3.272 0 3.778-2.794 3.778-3.722 0-.825-.353-3.722-3.297-3.722h-2.778z"/>
+        </svg>
+        ORCID
+      </a>
+
+      <a href="https://scholar.google.com/citations?user=dISWu3kAAAAJ" class="social-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 12.148 14.93 11 12 11c-2.93 0-5.548 1.148-6.758 2.769zm6.758.385c-2.209 0-4 1.791-4 4s1.791 4 4 4 4-1.791 4-4-1.791-4-4-4z"/>
+        </svg>
+        Google Scholar
+      </a>
+
+    </div>
+  </aside>
+
+  <!-- ── Content Area ── -->
+  <main class="content-area">
+
+    <!-- ═══════ ABOUT ═══════ -->
+    <div class="page active" id="page-about">
+      <div class="label">About</div>
+      <h1>Philipp Dierker</h1>
+
+      <p class="intro">
+        I am a Postdoctoral Researcher in Social Demography at the
+        <strong>Max Planck Institute for Demographic Research</strong> in Rostock, Germany,
+        and a Visiting Postdoctoral Research Associate at the
+        <strong>Department of Sociology, Princeton University</strong> (April–July 2026).
+      </p>
+
+      <p class="intro">
+        My research sits at the intersection of family sociology, demography, and epidemiology.
+        I study how partnership transitions — entering, dissolving, and re-forming partnerships —
+        shape health and well-being across the life course. I am particularly interested in single
+        mothers, parental separation, and the role of genetics in shaping social outcomes.
+      </p>
+
+    </div>
+
+    <!-- ═══════ RESEARCH ═══════ -->
+    <div class="page" id="page-research">
+      <div class="label">Research</div>
+      <h2>Publications</h2>
+
+      <!-- Peer-reviewed -->
+      <div class="pub-group">
+        <div class="group-title">Peer-Reviewed Articles</div>
+
+        <div class="pub">
+          <div class="pub-title">Are spouses similar in divorce? Investigating spousal similarity in couple-shared outcomes <span class="badge badge-fc">Forthcoming</span></div>
+          <div class="pub-authors">Sunde, H. F., Dierker, P.</div>
+          <div class="pub-journal">Twin Research and Human Genetics</div>
+          <div class="pub-actions">
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">The Role of Family Complexity in Mental and Physical Health in Mid-Adulthood</div>
+          <div class="pub-authors">Dierker, P., Kühn, M., Van Winkle, Z.</div>
+          <div class="pub-journal">Journal of Marriage and Family, 88(2), 488–504 · 2026</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.1111/jomf.70019" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              DOI
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Heterogeneous long-term health and social outcomes of type 1 diabetes — A full population 30-year observational cohort study of 38 modifying factors</div>
+          <div class="pub-authors">Hiilamo, A., Metsä-Simola, N., Dierker, P., Martikainen, P., Myrskylä, M.</div>
+          <div class="pub-journal">American Journal of Epidemiology, 195(1), 117–125 · 2026</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.1093/aje/kwaf028" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              DOI
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Selective re-partnering? Mental health and life satisfaction among separated single mothers in Germany and the UK</div>
+          <div class="pub-authors">Dierker, P., Kühn, M., Myrskylä, M.</div>
+          <div class="pub-journal">Acta Sociologica, 68(3), 1–16 · 2025</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.1177/00016993241300435" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              DOI
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Re-partnering and single mothers' mental health and life satisfaction trajectories</div>
+          <div class="pub-authors">Dierker, P., Kühn, M., Myrskylä, M.</div>
+          <div class="pub-journal">Journal of Marriage and Family, 87(1), 157–181 · 2025</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.1111/jomf.13015" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              DOI
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Compensation or accentuation? How parents from different social backgrounds decide to support their children</div>
+          <div class="pub-authors">Dierker, P., Diewald, M.</div>
+          <div class="pub-journal">European Sociological Review, 41(1), 111–126 · 2025</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.1093/esr/jcae010" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              DOI
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Does parental separation moderate the heritability of health risk behavior among adolescents?</div>
+          <div class="pub-authors">Dierker, P., Kühn, M., Mönkediek, B.</div>
+          <div class="pub-journal">Social Science &amp; Medicine, 331, 116070 · 2023</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.1016/j.socscimed.2023.116070" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              DOI
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Segregation processes in the transition from pre-primary to elementary school</div>
+          <div class="pub-authors">Gold, J., Störtländer, J., Dierker, P., Textor, A.</div>
+          <div class="pub-journal">Zeitschrift für Grundschulforschung, 15, 63–80 · 2022</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.1007/s42278-021-00128-5" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              DOI
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Working papers -->
+      <div class="pub-group">
+        <div class="group-title">Working Papers</div>
+
+        <div class="pub">
+          <div class="pub-title">Parental separation risk before and after the diagnosis of a child physical health condition <span class="badge badge-rr">R&amp;R · Demography</span></div>
+          <div class="pub-authors">Dierker, P., Metsä-Simola, N., Remes, H., Kailaheimo-Lönnqvist, S., Kühn, M., Martikainen, P., Myrskylä, M.</div>
+          <div class="pub-journal">MPIDR Working Paper</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.4054/MPIDR-WP-2024-011" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Working Paper
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Enduring links: Mental health effects of ex-partner's life events among separated parents <span class="badge badge-rr">R&amp;R · Social Forces</span></div>
+          <div class="pub-authors">Dierker, P., Kailaheimo-Lönnqvist, S., Kühn, M., Myrskylä, M.</div>
+          <div class="pub-journal">MPIDR Working Paper</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.4054/MPIDR-WP-2025-014" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Working Paper
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Do genetics shape mental health trajectories around partnership transitions? <span class="badge badge-rr">R&amp;R · JMF</span></div>
+          <div class="pub-authors">Dierker, P., Gueltzow, M., Lahtinen, H., Kühn, M., Martikainen, P., Myrskylä, M.</div>
+          <div class="pub-journal">MPIDR Working Paper</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.4054/MPIDR-WP-2024-033" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Working Paper
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Investigating the heritability of school grades from age 10 to 16 using biometric growth curve models <span class="badge badge-rr">R&amp;R · Dev. Psychology</span></div>
+          <div class="pub-authors">Ruks, M., Starr, A., Dierker, P.</div>
+          <div class="pub-journal">PsyArXiv</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.31234/osf.io/vecy9" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Preprint
+            </a>
+          </div>
+        </div>
+
+        <div class="pub">
+          <div class="pub-title">Parental Separation and the Accumulation of Stress during Early Life: A Pubertal Development Marker Approach <span class="badge badge-ur">Under Review</span></div>
+          <div class="pub-authors">Bister, L., Dierker, P.</div>
+          <div class="pub-journal">MPIDR Working Paper</div>
+          <div class="pub-actions">
+            <a href="https://doi.org/10.4054/MPIDR-WP-2026-002" class="pub-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Working Paper
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ PRESENTATIONS ═══════ -->
+    <div class="page" id="page-presentations">
+      <div class="label">Presentations</div>
+      <h2>Talks &amp; Conferences</h2>
+
+      <div class="pub-group">
+        <div class="group-title">Selected Presentations</div>
+
+        <div class="pres-block">
+          <div class="year-label">2025</div>
+          <div class="pres-item">Centre for Fertility and Health, Norwegian Institute of Public Health, Oslo <span class="pres-kind">(Invited)</span></div>
+          <div class="pres-item">Max Planck Institute for Human Development, Berlin <span class="pres-kind">(Invited)</span></div>
+          <div class="pres-item">Melbourne Institute of Applied Economic and Social Research, University of Melbourne <span class="pres-kind">(Invited)</span></div>
+          <div class="pres-item">Netherlands Interdisciplinary Demographic Institute, The Hague <span class="pres-kind">(Invited)</span></div>
+          <div class="pres-item">23rd Conference of the European Divorce Network, Barcelona, Spain <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">European Consortium for Sociological Research Annual Conference, Cologne, Germany <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">International Population Conference, Brisbane, Australia <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">Nordic Demographic Symposium, Middelfart, Denmark <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">INVEST Conference, Turku, Finland <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">Population Association of America Annual Meeting, Washington D.C. <span class="pres-kind">(Conference)</span></div>
+        </div>
+
+        <div class="pres-block">
+          <div class="year-label">2024</div>
+          <div class="pres-item">Nuffield College, University of Oxford <span class="pres-kind">(Invited)</span></div>
+          <div class="pres-item">22nd Conference of the European Divorce Network, Berlin, Germany <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">European Consortium for Sociological Research Annual Conference, Barcelona, Spain <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">European Sociological Association Conference, Porto, Portugal <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">European Population Conference, Edinburgh, Scotland <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">Population Association of America Annual Meeting, Columbus, United States <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">Annual Conference of the German Society for Demography, Hamburg, Germany <span class="pres-kind">(Conference)</span></div>
+        </div>
+
+        <div class="pres-block">
+          <div class="year-label">2023</div>
+          <div class="pres-item">Dutch Demography Day, Utrecht, Netherlands <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">21st Conference of the European Divorce Network, Utrecht, Netherlands <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">SLLS Annual International Conference, Munich, Germany <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">European Consortium for Sociological Research Annual Conference, Prague, Czech Republic <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">Understanding Society Scientific Conference, Colchester, United Kingdom <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">RC28 Conference, Paris, France <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">European Social Science Genetics Network (ESSGN) Conference, Bologna, Italy <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">Population Association of America Annual Meeting, New Orleans, United States <span class="pres-kind">(Conference)</span></div>
+        </div>
+
+        <div class="pres-block">
+          <div class="year-label">2022</div>
+          <div class="pres-item">Deutsche Gesellschaft für Soziologie Kongress, Bielefeld, Germany <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">British Society for Population Studies Annual Conference, Winchester, United Kingdom <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">American Sociological Association Annual Meeting, Los Angeles, United States <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">European Consortium for Sociological Research Annual Conference, Amsterdam, Netherlands <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">European Population Conference 2022, Online <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">SOEP User Conference, Berlin, Germany <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">Population Association of America Annual Meeting, Atlanta, United States <span class="pres-kind">(Conference)</span></div>
+          <div class="pres-item">Annual Conference of the German Society for Demography, Online <span class="pres-kind">(Conference)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ CV ═══════ -->
+    <div class="page" id="page-cv">
+      <div class="label">CV</div>
+      <h2>Curriculum Vitae</h2>
+
+      <a href="CV.pdf" class="cv-btn" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download Full CV (PDF)
+      </a>
+
+      <div class="cv-group">
+        <div class="group-title">Academic Positions</div>
+        <div class="cv-row">
+          <div class="cv-year">2026</div>
+          <div>
+            <div class="cv-title">Visiting Postdoctoral Research Associate</div>
+            <div class="cv-sub">Department of Sociology, Office of Population Research, Princeton University · April–July</div>
+          </div>
+        </div>
+        <div class="cv-row">
+          <div class="cv-year">2025–</div>
+          <div>
+            <div class="cv-title">Postdoctoral Researcher</div>
+            <div class="cv-sub">Department of Social Demography, Max Planck Institute for Demographic Research</div>
+          </div>
+        </div>
+        <div class="cv-row">
+          <div class="cv-year">2021–2025</div>
+          <div>
+            <div class="cv-title">Doctoral Researcher</div>
+            <div class="cv-sub">Department of Social Demography, Max Planck Institute for Demographic Research</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-group">
+        <div class="group-title">Education</div>
+        <div class="cv-row">
+          <div class="cv-year">2022–2025</div>
+          <div>
+            <div class="cv-title">Ph.D. in Demography</div>
+            <div class="cv-sub">University of Helsinki, Finland</div>
+          </div>
+        </div>
+        <div class="cv-row">
+          <div class="cv-year">2019–2021</div>
+          <div>
+            <div class="cv-title">M.A. in Sociology</div>
+            <div class="cv-sub">Bielefeld University, Germany</div>
+          </div>
+        </div>
+        <div class="cv-row">
+          <div class="cv-year">2015–2019</div>
+          <div>
+            <div class="cv-title">B.A. in Politics and Society &amp; History</div>
+            <div class="cv-sub">University of Bonn, Germany</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Page switching
+  const buttons = document.querySelectorAll('.nav-btn');
+  const pages   = document.querySelectorAll('.page');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      pages.forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + btn.dataset.page).classList.add('active');
+      document.querySelector('.content-area').scrollTop = 0;
+    });
+  });
+
+  // Mobile: set padding-top on .layout to match topbar height
+  function fixMobileLayout() {
+    if (window.innerWidth <= 768) {
+      document.querySelector('.layout').style.paddingTop =
+        document.querySelector('.topbar').offsetHeight + 'px';
+    } else {
+      document.querySelector('.layout').style.paddingTop = '';
+    }
+  }
+
+  fixMobileLayout();
+  window.addEventListener('resize', fixMobileLayout);
+</script>
+
+</body>
+</html>
